@@ -2,8 +2,8 @@
 
 int main (void)
 {
-    printf("Let's\n");
+    printf("Let'1s\n");
     printf("   go\n");
-    printf("     to walk\n");
+    printf("     to walk");
     return 0;
 }
