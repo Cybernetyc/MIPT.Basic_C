@@ -13,8 +13,8 @@ MFTI_Homeworks DZ4 main1.c
 
 int main (void)
 {
-    /* Явно объявим и инициализируем *** целых числа со знаком */
-    signed int a=0, b=0, max=0;
+    /* Явно объявим и инициализируем 2 целых числа со знаком */
+    signed int a=0, b=0;
     
     /* Предложение ввести значение чисел разделённых пробелом */
     printf("Please enter the numbers separated by space\n");
