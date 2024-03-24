@@ -88,13 +88,13 @@ int ArrMax(int *arr, int n)
 1) Позицию максимального элемента */
 int ArrMaxPos(int *arr, int n)
 {
-    int max = arr[0], pos_max;
+    int max = arr[0], pos_max=1;
     for (int i=0; i < n; i++)
     {
         if (max < arr[i])
         {
             max = arr[i];
-            pos_max = i;
+            pos_max = i+1;
         }
     }
     return pos_max;
@@ -129,13 +129,13 @@ int ArrMin(int *arr, int n)
 int ArrMinPos(int *arr, int n)
 {
     
-    int min = arr[0], min_pos=0;
+    int min = arr[0], min_pos=1;
     for (int i=0; i < n; i++)
     {
         if (min > arr[i])
         {
             min = arr[i];
-            min_pos = i;
+            min_pos = i+1;
         }
     }
     return min_pos;
