@@ -18,11 +18,19 @@ int main (void)
 { 
     /* Объявим переменную и массив типа int */
     int arr[VAL_ARR];
-
+    int arr_var[4];
     /* Вывов функции инициализации массива */
     ArrInput(arr, VAL_ARR);
+
+    for (int i = 0; i < 4; i++)
+    {
+        arr_var[i]=arr[VAL_ARR-1-i];
+        
+        printf("Arr VAR = %d \n", arr_var[i]);
+        arr[i]=arr_var[i];
+    }
     
-    ArrCycleSlide(arr, VAL_ARR);
+    //ArrCycleSlide(arr, VAL_ARR);
     
     /* Функцией ArrOuptut произведём вывод конечного значения изменёного массива*/
     ArrOutput(arr, VAL_ARR);
