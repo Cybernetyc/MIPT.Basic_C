@@ -1,17 +1,17 @@
 /*Черкашин Дмитрий. 
-Cортировка пузырьком
-MFTI BubleSort
+Cортировка пузырьком по убыванию
+MFTI BubleSortNegative
 24.03.24
-Условие:            Изучить сортировку пузырьком
+Условие:            Изучить сортировку пузырьком по убыванию
 Вход:               Произвольный массив
 Выход:              Он же отсортированный в прямой и обратной последовательности
                     с вывовдом на экран */
 
 #include <stdio.h>  // Подключим стандартную библиотеку ввода вывода
 
-void ArrInput(int *arr, int n);            // Объявим прототип функции инициализации
-void ArrOutput (int *arr, int n);          // Объявление прототипа функции вывода массива
-void ArrSortBubbleIncr(int *arr, int n);   // Объявление прототипа функции сортировки массива пузырьком
+void ArrInput (int *arr, int n);            // Объявим прототип функции инициализации
+void ArrOutput (int *arr, int n);           // Объявление прототипа функции вывода массива
+void ArrSortBubbleDecr (int *arr, int n);   // Объявление прототипа функции сортировки массива пузырьком
 
 int main (void)
 { 
@@ -39,7 +39,7 @@ WRONG1:
     ArrInput(arr, n);
 
     /* Вызов функции сортировки пузырьком*/
-    ArrSortBubbleIncr(arr, n);
+    ArrSortBubbleDecr(arr, n);
     
     /* Функцией ArrOuptut произведём вывод конечного значения изменёного массива*/
     ArrOutput(arr, n);
@@ -63,8 +63,8 @@ void ArrInput(int *arr, int n)
     return;
 }
 
-/* Функция ArrSortBubbleIncr сортировки пузырьком по возрастанию*/
-void ArrSortBubbleIncr(int *arr, int n)
+/* Функция ArrSortBubbleDecr сортировки пузырьком по убыванию*/
+void ArrSortBubbleDecr(int *arr, int n)
 {
     int arr_var;
     /* Общее количество проходов по массиву n-1*/
@@ -74,8 +74,8 @@ void ArrSortBubbleIncr(int *arr, int n)
         счётчик итерации больше предыдущего счётчика*/
         for (int j = n-1 ; j > i; j--)
         {
-            /* Если элемент левее больше чем элемент правее*/
-            if (arr[j-1]>arr[j])
+            /* Если элемент левее меньше чем элемент правее*/
+            if (arr[j-1]<arr[j])
             {
                 /* Поменяем их местами через доп переменную*/
                 arr_var=arr[j-1];
