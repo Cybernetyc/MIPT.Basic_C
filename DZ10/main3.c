@@ -34,7 +34,11 @@ char *output_fn = "output.txt";
 
 /*  Прототип функции обработки данных из файла
     согласно условию задачи */
-void one_at_time (char *arr, char *var_arr, int count, int space_pointer);
+int one_at_time (char *arr, char *var_arr, int count, int space_pointer);
+
+/*  Прототип функции сортировки массива символов
+    согласно условию задачи */
+void sort_var_arr (int index_var_arr, char *arr_var);
 
 /* main - вход в программу */
 int main(void)
@@ -65,7 +69,7 @@ int main(void)
     /* count - счётчик длины массива. Инициализирован как 0 
        space_pointer - индекс символа пробела 
        тип int*/
-    int count = 0, space_pointer;
+    int count = 0, space_pointer, index_var_arr;
 
     /* Считываем посимвольно пока не конец файла или не перевод строки */
     while (((c = getc(fp)) != EOF) && (c != '\n'))
@@ -85,7 +89,10 @@ int main(void)
     fclose(fp);
 
     /* Вызов функции реализующей требование условия задачи*/
-    one_at_time (arr, var_arr, count, space_pointer);
+    index_var_arr = one_at_time (arr, var_arr, count, space_pointer);
+    
+    /* Отсортируем полученный массив согласно требованию задачи*/
+    sort_var_arr(index_var_arr, var_arr);
 
     /* Создадим и откроем файл на запись */
     if ((fp = fopen(output_fn, "w")) == NULL)
@@ -94,7 +101,8 @@ int main(void)
         perror("Error occured while opening output file!");
         return 1;
     }
-    
+
+
     /* Вывод полученных значений*/
     for (int i = 0; i < count; i++)
     {
@@ -120,7 +128,7 @@ int main(void)
 3) count - значение числа считанных элементов
 4) space_pointer - индекс символа пробела из массива 
 Ничего не возвращает*/
-void one_at_time (char *arr, char *var_arr, int count, int space_pointer)
+int one_at_time (char *arr, char *var_arr, int count, int space_pointer)
 {
     /*  count1 - для подсчёта повторяющихся символов до пробела 
         count2 - для подсчёта повторяющихся символов после пробела 
@@ -147,7 +155,7 @@ void one_at_time (char *arr, char *var_arr, int count, int space_pointer)
         }
 
         /* Второй вспомогательный проход по правой части массива до пробела*/
-        for (int k = count; k > space_pointer; k--)
+        for (int k = count-1; k > space_pointer; k--)
         {
             /* Если значения символов совпали */
             if (arr[i]==arr[k])
@@ -165,4 +173,30 @@ void one_at_time (char *arr, char *var_arr, int count, int space_pointer)
     }
     /* Преобразовать доп. массив в строку */
     var_arr[index_varr_arr]='\0';
+}
+
+    
+/* sort_var_arr - функция сортировки массива символов
+Принимает:
+1) index_var_arr - длинну масива выходных данных
+2) *var_arr -указатель на массив var_arr 
+Ничего не возвращает*/
+void sort_var_arr(int index_var_arr, char *var_arr)
+{ 
+    /*  temp - переменная для замещений символов
+        тип  - char*/
+    char temp;
+
+    for (int i = 0; i < index_var_arr; ++i)
+    {
+        for (int j = index_var_arr - 1; j > i; --j)
+        {
+            if (var_arr[i] > var_arr[j])
+            {
+                temp = var_arr[i];
+                var_arr[i] = var_arr[j];
+                var_arr[j] = temp;
+            }
+        }
+    }
 }
