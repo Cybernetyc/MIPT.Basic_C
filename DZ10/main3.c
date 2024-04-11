@@ -175,7 +175,6 @@ int one_at_time (char *arr, char *var_arr, int count, int space_pointer)
     var_arr[index_varr_arr]='\0';
 }
 
-    
 /* sort_var_arr - функция сортировки массива символов
 Принимает:
 1) index_var_arr - длинну масива выходных данных
