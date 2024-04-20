@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "temp_api.h": "c",
+        "stdint.h": "c",
+        "stdio.h": "c",
+        "struct_temp.h": "c",
+        "struct_sense.h": "c",
+        "struct.h": "c"
+    }
+}
