@@ -1,99 +1,75 @@
 /* Черкашин Дмитрий.
-Домашнее задание №13. Coздание консольного приложения - Статистика температуры.
-MFTI_Homeworks DZ12- temp.c
-22.04.24 */
+ДЗ №13. Курсовой проект. Coздание консольного приложения - Статистика температуры.
+08.02.25 */
 
-/*  Подключение стандартных библиотек */
 #include <stdio.h>
 #include <stdint.h>
-#include "interface.h"
-#include "module_for_FILE_read.h"
-
-/*  Подключение заголовочного файла в котором определена структура*/
-#include "struct.h"
-
-/*  Подключение заголовочного файла с протопитами фукнций*/
-#include "temp_api.h"
-
-/*  Директива препроцессора для определения длины массива структур */
-#define SIZE 100
+#include <stdlib.h>
+#include "struct.h"                 ///< Пользовательские заголовки
+#include "temp_api.h"                
+#include "module_for_FILE_read.h"   
 
 int main (int argc, char *argv[])
-{   
-    result_of_arg_t abc = interface(argc, argv);
+{ 
+  result_of_arg_t abc = interface(argc, argv);  ///< Обработка входных аргументов функции main
 
-    if (abc.status == CLC)
-        FILE_Read(abc.path);
-
-    /*  info - массив cтруктур 
-        SIZE - размер массива 
-        тип  - sensor */
-    sensor_t info[SIZE];
+  if (abc.status == CLC) ///< Если ключ на подсчёт - обрабатываем файлы
+  {  
+    int size_for_dynamic = FILE_Count_rec (abc.path);                ///< Грубо вычислили требуемое кол-во динамической памяти.
+    sensor_t * info = malloc(size_for_dynamic * sizeof(sensor_t));   ///< Выделили память.
+    int record_count = FILE_Read(abc.path, info);                    ///< Подсчитали кол-во записей.
     
-    /*  переменные для передачи в исполняемые функции 
-        тип - int */
-    int year = 1980 , month=1;
-    
-    /*
-    for (int i = 0; i < argc; i++)
+    /**
+     * Если получен ключи для вычисления месячные температур
+     * и номер месяца валиден
+     */
+    if (abc.mounth >=1 && abc.mounth <= 12)                          
     {
-        //printf("i=%i, ARGV[%i] = \"%s\"\n\n", i, i, argv[i]);
-        //printf("i+1=%i, ARGV[%i] = \"%s\"\n\n", i+1, i+1, argv[i+1]);
-
-        if (argv[1]== NULL)
-        {
-            print_help();
-        }
-        char *var_arr = argv[i];
-        if (var_arr[0]=='-')
-        {
-            switch (var_arr[1])
-            {
-            case 'h':
-            case 'H':
-                print_keys();
-                break;
-            default :
-                print_error_key();
-            }
-        }
-
+      /** 
+       * Производим подсчёт:
+       * 1. Средней температуры по заданному месяцу
+       * 2. Минимальной температуры по заданному месяцу
+       * 3. Максимальной температуры по заданному месяца
+       */  
+      int AToM  = avr_temp_month(info, record_count, abc.mounth);
+      int MiToM = min_temp_month(info, record_count, abc.mounth);
+      int MaToM = max_temp_month(info, record_count, abc.mounth);
+      
+      /**
+       * Вывод вычисленных значений в stdout:
+       * 1. Средней температуры по заданному месяцу
+       * 2. Минимальной температуры по заданному месяцу
+       * 3. Максимальной температуры по заданному месяцу
+       */
+      printf("Average Temperature of %d month = %d\n", abc.mounth, AToM);
+      printf("Minimum Temperature of %d month = %d\n", abc.mounth, MiToM);
+      printf("Maximum Temperature of %d month = %d\n", abc.mounth, MaToM);
     }
-    */
-    /*  Вызов функции подсчёта среднемесячной температуры 
-        с возвратом цельночисленного значения */
-    int8_t avr_t_m = avr_temp_month(SIZE, info, year, month);
-    
-    /*  Вызов функции подсчёта минимальной температуры в текущем месяце 
-        с возвратом цельночисленного значения */
-    int8_t min_t_m = min_temp_month(SIZE, info, year, month);
-    
-    /*  Вызов функции подсчёта максимальной температуры в текущем месяце 
-        с возвратом цельночисленного значения */
-    int8_t max_t_m = max_temp_month(SIZE, info, year, month);
-    
-    /*  Вызов функции подсчёта среднегодовой температуры 
-        с возвратом цельночисленного значения */
-    int8_t avr_t_y = avr_temp_year(SIZE, info, year);
+      else 
+    {
+      /** 
+       * Производим подсчёт:
+       * 1. Среднегодовой температуры
+       * 2. Минимальной годовой температуры
+       * 3. Максимальной годовой температуры
+       */  
+      int AToY = avr_temp_year(info, record_count);
+      int MiToY = min_temp_year(info, record_count);
+      int MaToY = max_temp_year(info, record_count);
+      
+      /**
+       * Вывод вычисленных значений в stdout:
+       * 1. Среднегодовой температуры
+       * 2. Минимальной годовой температуры
+       * 3. Максимальной годовой температуры
+       */
+      printf("Average Temperature of year = %d \n", AToY);
+      printf("Minimal Temperature of year = %d \n", MiToY);
+      printf("Maximal Temperature of year = %d \n", MaToY);        
+    }
 
-    /*  Вызов функции подсчёта минимальной годовой температуры 
-        с возвратом цельночисленного значения */
-    int8_t min_t_y = min_temp_year(SIZE, info, year);
-
-    /*  Вызов функции подсчёта максимальной годовой температуры 
-        с возвратом цельночисленного значения */
-    int8_t max_t_y = max_temp_year(SIZE, info, year);
-
-    /*  Вывод значений полученных из функций*/
-    /*puts("");
-    printf("Average temperature month = %i\n", avr_t_m);
-    printf("Minimal temperature month = %i\n", min_t_m);
-    printf("Maximal temperature month = %i\n", max_t_m);
-    puts("");
-    printf("Average temperature year  = %i\n", avr_t_y);
-    printf("Minimal temperature year  = %i\n", min_t_y);
-    printf("Maximal temperature year  = %i\n", max_t_y);
-    puts("");*/
-    
-    return 0;
+    free(info);   ///< Высвободили динамическую память
+    info = NULL;  ///< Указатель в NULL
+  }
+  return EXIT_SUCCESS;
 }
