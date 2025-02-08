@@ -23,7 +23,7 @@ int main (int argc, char *argv[])
      * Если получен ключи для вычисления месячные температур
      * и номер месяца валиден
      */
-    if (abc.mounth >=1 && abc.mounth <= 12)                          
+    if ( abc.mounth >=1 && abc.mounth <= 12 )
     {
       /** 
        * Производим подсчёт:
